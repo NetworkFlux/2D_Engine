@@ -11,6 +11,10 @@
 #  include <X11/Xlib.h>
 # endif
 
+# ifdef _WIN32
+#  include <windows.h>
+# endif
+
 /*
 ** Struct: X11Atoms
 ** ----------------
@@ -75,6 +79,11 @@ typedef struct s_window_context
 	GC			gc;
 	X11Atoms	atoms;
 	int			screen;
+# endif
+# ifdef _WIN32
+	HWND		hwnd;
+	HINSTANCE	hinstance;
+	WNDCLASS	wndclass;
 # endif
 }	WindowContext;
 

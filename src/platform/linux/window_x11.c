@@ -1,6 +1,7 @@
 #include "window_manager.h"
 #include <stdlib.h>
 
+#ifdef __linux__
 /*
 ** Function: window_init
 ** ---------------------
@@ -98,3 +99,5 @@ void	window_cleanup(WindowContext *ctx)
 	XCloseDisplay(ctx->display);				// Close the connection to X server
 	free(ctx);									// Free the context struct
 }
+
+#endif
