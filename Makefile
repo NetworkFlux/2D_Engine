@@ -1,6 +1,7 @@
 # ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-# ┃       🛠️ C PROJECT MAKEFILE         ┃
-# ┃      With Optional Static Library   ┃
+# ┃       🛠️ CROSS-PLATFORM MAKEFILE    ┃
+# ┃    Linux by default / Windows via   ┃
+# ┃         `make windows`              ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 # Make silence cleaner
@@ -12,7 +13,6 @@ MAKEFLAGS += --no-print-directory
 
 EXEC = 2D_Engine		# 🟩 Name of your final executable (you can change this)
 
-CC = gcc
 CFLAGS = -Wall -Wextra -Werror		# 🛡️ Recommended safety flags
 
 RM = rm -rf			# 🚮 Command to remove files/folders
@@ -75,7 +75,6 @@ ifeq ($(USE_EXTLIB), 1)
 # Build target for the lib
     LIB_TARGET = $(EXTLIB_LIB)
 else
-    LDFLAGS = -lX11
     LIB_TARGET =
 endif
 
@@ -84,6 +83,17 @@ endif
 # ────────────────────────────────────────────────
 
 # 🧱 Main entry point
+all: linux
+
+linux: CC = gcc
+linux: LDFLAGS = -lX11
+linux: $(BIN_DIR)/$(EXEC)
+
+windows: CC = x86_64-w64-mingw32-gcc
+windows: LDFLAGS = -lgdi32 -luser32
+windows: EXEC := $(EXEC).exe
+windows: $(BIN_DIR)/$(EXEC)
+
 all: $(LIB_TARGET) $(BIN_DIR)/$(EXEC)
 
 # 📦 External static lib build step (optional)
@@ -100,7 +110,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # 🔗 Final linking stage
-$(BIN_DIR)/$(EXEC): $(OBJ)
+$(BIN_DIR)/%: $(OBJ)
 	@if [ -z "$(OBJ)" ]; then \
 		echo "❌ No object files found! Check your source directory."; \
 		exit 1; \
@@ -134,4 +144,4 @@ endif
 re: fclean all
 
 # Prevent Makefile from trying to build these as files
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re linux windows

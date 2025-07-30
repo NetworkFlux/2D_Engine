@@ -29,10 +29,12 @@
 **                        This allows the window to receive a message when the user
 **                        tries to close it via the window manager (e.g., clicking the X).
 */
+# ifdef __linux__
 typedef struct s_x11_atoms
 {
 	Atom	wm_delete_window;
 }	X11Atoms;
+# endif
 
 /*
 ** Struct: WindowContext

@@ -12,7 +12,7 @@ LRESULT CALLBACK	WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return (0);
 	}
 
-	return (DefWindowProc(hwnd, msg, wParam, lParam);
+	return (DefWindowProc(hwnd, msg, wParam, lParam));
 }
 
 WindowContext	*window_init(int width, int height, const char *title)
@@ -66,6 +66,7 @@ WindowContext	*window_init(int width, int height, const char *title)
 
 void	window_poll(WindowContext *ctx, int *running)
 {
+	(void)ctx;
 	MSG	msg;
 
 	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
